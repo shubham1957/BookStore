@@ -23,7 +23,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<Book> createTodo(@RequestBody Book book){
+    public ResponseEntity<Void> createTodo(@RequestBody Book book){
         bookList.add(book);
         return new ResponseEntity<>(HttpStatus.CREATED);  // Return 201 Created status
     }
@@ -36,5 +36,24 @@ public class BookController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @GetMapping("/books/{id}")
+    public ResponseEntity<Book> searchBook(@PathVariable int id){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                return  new ResponseEntity<>(b,HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @PutMapping("/books/{id}")
+    public ResponseEntity<Void> updateBook(@PathVariable int id,@RequestBody Book book){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                b=book;
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
