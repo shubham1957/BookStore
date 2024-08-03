@@ -47,11 +47,11 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PutMapping("/books/{id}")
-    public ResponseEntity<Void> updateBook(@PathVariable int id,@RequestBody Book book){
-        for(Book b : bookList){
-            if(b.getId()==id){
-                b=book;
-                return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Book> updateBook(@PathVariable int id,@RequestBody Book book){
+        for(int i = 0; i<bookList.size();i++){
+            if(bookList.get(i).getId()==id){
+                bookList.set(i,book);
+                return new ResponseEntity<>(bookList.get(i),HttpStatus.OK);
             }
         }
         return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
