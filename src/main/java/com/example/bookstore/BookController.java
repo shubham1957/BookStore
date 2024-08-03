@@ -1,5 +1,7 @@
 package com.example.bookstore;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,23 +18,23 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<Book> getBooks(){
-        return bookList;
+    public ResponseEntity<List<Book>> getBooks(){
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
     @PostMapping("/books")
-    public void createTodo(@RequestBody Book book){
+    public ResponseEntity<Book> createTodo(@RequestBody Book book){
         bookList.add(book);
+        return new ResponseEntity<>(HttpStatus.CREATED);  // Return 201 Created status
     }
     @DeleteMapping("/books/{id}")
-    public void deleteTodo(@PathVariable int id){
+    public ResponseEntity<Void> deleteTodo(@PathVariable int id){
         for(Book b : bookList){
             if(b.getId()==id){
                 bookList.remove(b);
-                break;
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
 }
