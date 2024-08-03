@@ -1,8 +1,6 @@
 package com.example.bookstore;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,5 +19,20 @@ public class BookController {
     public List<Book> getBooks(){
         return bookList;
     }
+
+    @PostMapping("/books")
+    public void createTodo(@RequestBody Book book){
+        bookList.add(book);
+    }
+    @DeleteMapping("/books/{id}")
+    public void deleteTodo(@PathVariable int id){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                bookList.remove(b);
+                break;
+            }
+        }
+    }
+
 
 }
