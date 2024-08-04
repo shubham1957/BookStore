@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/v1/books") //API Versioning (Parent URL)
 public class BookController {
@@ -16,7 +18,6 @@ public class BookController {
         bookList.add(new Book( 2021,"Book2",2));
         bookList.add(new Book(2022,"Book3",3));
     }
-
     //Create a book (CREATE)
     @PostMapping()
     public ResponseEntity<Book> createTodo(@RequestBody Book newBook){
@@ -33,7 +34,7 @@ public class BookController {
 
     //Update a specific book (UPDATE)
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id,@RequestBody Book book){
+    public ResponseEntity<Object> updateBook(@PathVariable Long id,@RequestBody Book book){
         for(int i = 0; i<bookList.size();i++){
             if(bookList.get(i).getId()==id){
                 bookList.set(i,book);
@@ -41,30 +42,30 @@ public class BookController {
 
             }
         }
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new String("Book id:" +id+" Not Found !!"));
     }
 
     //Delete a Book (DELETE)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id){
+    public ResponseEntity<Object> deleteTodo(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
                 bookList.remove(b);
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(new String("Book deleted Successfully."));
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new String("Book id:" +id+" Not Found !!"));
     }
 
     //Search a book by id (SEARCH)
     @GetMapping("/{id}")
-    public ResponseEntity<Book> searchBook(@PathVariable Long id){
+    public ResponseEntity<Object> searchBook(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
                 return  ResponseEntity.status(HttpStatus.OK).body(b);
             }
         }
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(new String ("Book id:" +id+" Not Found !!"));
     }
 
 }
