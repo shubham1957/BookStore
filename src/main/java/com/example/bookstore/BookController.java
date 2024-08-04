@@ -1,5 +1,6 @@
 package com.example.bookstore;
 
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,9 @@ public class BookController {
     public static List<Book> bookList;
     public  BookController(){
         bookList = new ArrayList<>();
-        bookList.add(new Book(2020,"Book1",1));
-        bookList.add(new Book( 2021,"Book2",2));
-        bookList.add(new Book(2022,"Book3",3));
+        bookList.add(new Book(1,"Book1",2000, true));
+        bookList.add(new Book( 2,"Book2",2021,true));
+        bookList.add(new Book(3,"Book3",2022,false));
     }
     //Create a book (CREATE)
     @PostMapping()
@@ -34,7 +35,7 @@ public class BookController {
 
     //Update a specific book (UPDATE)
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateBook(@PathVariable Long id,@RequestBody Book book){
+    public ResponseEntity<?> updateBook(@PathVariable Long id,@RequestBody Book book){
         for(int i = 0; i<bookList.size();i++){
             if(bookList.get(i).getId()==id){
                 bookList.set(i,book);
@@ -47,7 +48,7 @@ public class BookController {
 
     //Delete a Book (DELETE)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteTodo(@PathVariable Long id){
+    public ResponseEntity<?> deleteTodo(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
                 bookList.remove(b);
@@ -59,7 +60,7 @@ public class BookController {
 
     //Search a book by id (SEARCH)
     @GetMapping("/{id}")
-    public ResponseEntity<Object> searchBook(@PathVariable Long id){
+    public ResponseEntity<?> searchBook(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
                 return  ResponseEntity.status(HttpStatus.OK).body(b);
@@ -69,20 +70,36 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> updateBookPartially (@PathVariable Long id, @RequestBody Book book){
+    public ResponseEntity<?> updateBookPartially (@PathVariable Long id, @RequestBody Book book){
         for(Book b : bookList){
             if(b.getId()==id){
                 System.out.println(b);
-                if(book.getAuthor()!=null){
-                    b.setAuthor(book.getAuthor());
+                if(book.getBookName()!=null){
+                    b.setBookName(book.getBookName());
                 }
                 if(book.getYear()!=0){
                     b.setYear(book.getYear());
+                }
+                if(book.isAvailable()==true){
+                    b.setAvailable(true);
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(b);
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book id:" +id+" Not Found !!");
     }
+
+    //Get BookList based on availability
+//    @GetMapping()
+//    public ResponseEntity<List<Book>> getBooksByFilter(@RequestParam(required = false, defaultValue = "true") boolean isAvailable){
+//
+//        List<Book> filteredBookList = new ArrayList<>();
+//        for(Book b :bookList ){
+//            if(b.isAvailable()==isAvailable){
+//                filteredBookList.add(b);
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(filteredBookList);
+//    }
 
 }
