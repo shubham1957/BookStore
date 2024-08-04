@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @RestController
 public class BookController {
     public static List<Book> bookList;
@@ -17,35 +16,21 @@ public class BookController {
         bookList.add(new Book(2022,"Book3",3));
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<List<Book>> getBooks(){
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
-    }
-
+    //Create a book (CREATE)
     @PostMapping("/books")
     public ResponseEntity<Void> createTodo(@RequestBody Book book){
         bookList.add(book);
         return new ResponseEntity<>(HttpStatus.CREATED);  // Return 201 Created status
     }
-    @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable int id){
-        for(Book b : bookList){
-            if(b.getId()==id){
-                bookList.remove(b);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    //Get all created books (READ)
+    @GetMapping("/books")
+    public ResponseEntity<List<Book>> getBooks(){
+
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
-    @GetMapping("/books/{id}")
-    public ResponseEntity<Book> searchBook(@PathVariable int id){
-        for(Book b : bookList){
-            if(b.getId()==id){
-                return  new ResponseEntity<>(b,HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+
+    //Update a specific book (UPDATE)
     @PutMapping("/books/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id,@RequestBody Book book){
         for(int i = 0; i<bookList.size();i++){
@@ -56,4 +41,28 @@ public class BookController {
         }
         return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    //Search a Book (DELETE)
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable int id){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                bookList.remove(b);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    //Search a book by Id (SEARCH)
+    @GetMapping("/books/{id}")
+    public ResponseEntity<Book> searchBook(@PathVariable int id){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                return  new ResponseEntity<>(b,HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
