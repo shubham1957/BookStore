@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
-@RequestMapping("/api/books/v1") //API Versioning (Parent URL)
+@RequestMapping("/api/v1/books") //API Versioning (Parent URL)
 public class BookController {
     public static List<Book> bookList;
     public  BookController(){
@@ -19,9 +19,9 @@ public class BookController {
 
     //Create a book (CREATE)
     @PostMapping()
-    public ResponseEntity<Void> createTodo(@RequestBody Book book){
-        bookList.add(book);
-        return ResponseEntity.status(HttpStatus.CREATED).build(); // Return 201 Created status
+    public ResponseEntity<Book> createTodo(@RequestBody Book newBook){
+        bookList.add(newBook);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newBook); // Return 201 Created status
     }
 
     //Get all created books (READ)
