@@ -68,4 +68,21 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new String ("Book id:" +id+" Not Found !!"));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> updateBookPartially (@PathVariable Long id, @RequestBody Book book){
+        for(Book b : bookList){
+            if(b.getId()==id){
+                System.out.println(b);
+                if(book.getAuthor()!=null){
+                    b.setAuthor(book.getAuthor());
+                }
+                if(book.getYear()!=0){
+                    b.setYear(book.getYear());
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(b);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book id:" +id+" Not Found !!");
+    }
+
 }
