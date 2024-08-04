@@ -42,7 +42,7 @@ public class BookController {
         return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //Search a Book (DELETE)
+    //Delete a Book (DELETE)
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable int id){
         for(Book b : bookList){
