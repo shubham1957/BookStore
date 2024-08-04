@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
+@RequestMapping("/api/books/v1") //API Versioning (Parent URL)
 public class BookController {
     public static List<Book> bookList;
     public  BookController(){
@@ -17,21 +18,21 @@ public class BookController {
     }
 
     //Create a book (CREATE)
-    @PostMapping("/books")
+    @PostMapping()
     public ResponseEntity<Void> createTodo(@RequestBody Book book){
         bookList.add(book);
         return ResponseEntity.status(HttpStatus.CREATED).build(); // Return 201 Created status
     }
 
     //Get all created books (READ)
-    @GetMapping("/books")
+    @GetMapping()
     public ResponseEntity<List<Book>> getBooks(){
 
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
     //Update a specific book (UPDATE)
-    @PutMapping("/books/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id,@RequestBody Book book){
         for(int i = 0; i<bookList.size();i++){
             if(bookList.get(i).getId()==id){
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     //Delete a Book (DELETE)
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
@@ -56,7 +57,7 @@ public class BookController {
     }
 
     //Search a book by id (SEARCH)
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> searchBook(@PathVariable Long id){
         for(Book b : bookList){
             if(b.getId()==id){
