@@ -13,6 +13,7 @@ import java.util.Objects;
 @RequestMapping("/api/v1/books") //API Versioning (Parent URL)
 public class BookController {
     public static List<Book> bookList;
+    public final String BOOK_NOT_FOUND = "Book Not Found";
     public  BookController(){
         bookList = new ArrayList<>();
         bookList.add(new Book(1,"Book1",2000, true));
@@ -43,7 +44,7 @@ public class BookController {
 
             }
         }
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new String("Book id:" +id+" Not Found !!"));
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(BOOK_NOT_FOUND);
     }
 
     //Delete a Book (DELETE)
@@ -55,7 +56,7 @@ public class BookController {
                 return ResponseEntity.status(HttpStatus.OK).body(new String("Book deleted Successfully."));
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new String("Book id:" +id+" Not Found !!"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BOOK_NOT_FOUND);
     }
 
     //Search a book by id (SEARCH)
@@ -66,9 +67,8 @@ public class BookController {
                 return  ResponseEntity.status(HttpStatus.OK).body(b);
             }
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new String ("Book id:" +id+" Not Found !!"));
+        return ResponseEntity.status(HttpStatus.OK).body(BOOK_NOT_FOUND);
     }
-
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateBookPartially (@PathVariable Long id, @RequestBody Book book){
         for(Book b : bookList){
@@ -86,12 +86,14 @@ public class BookController {
                 return ResponseEntity.status(HttpStatus.OK).body(b);
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book id:" +id+" Not Found !!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BOOK_NOT_FOUND);
     }
+
+
 
     //Get BookList based on availability
 //    @GetMapping()
-//    public ResponseEntity<List<Book>> getBooksByFilter(@RequestParam(required = false, defaultValue = "true") boolean isAvailable){
+//    public ResponseEntity<List<Book>> getBooksByFilter(@RequestParam(required = false, defaultValue = "true") Boolean isAvailable){
 //
 //        List<Book> filteredBookList = new ArrayList<>();
 //        for(Book b :bookList ){
