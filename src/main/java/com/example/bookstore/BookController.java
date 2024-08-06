@@ -1,6 +1,8 @@
 package com.example.bookstore;
 
 import jakarta.websocket.server.PathParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +15,16 @@ import java.util.Objects;
 @RequestMapping("/api/v1/books") //API Versioning (Parent URL)
 public class BookController {
     public static List<Book> bookList;
+    public BookService bookService;
     public final String BOOK_NOT_FOUND = "Book Not Found";
-    public  BookController(){
+
+    public  BookController(BookService bookservice){
+        this.bookService=bookservice; //Constructor based dependency injection
         bookList = new ArrayList<>();
         bookList.add(new Book(1,"Book1",2000, true));
         bookList.add(new Book( 2,"Book2",2021,true));
         bookList.add(new Book(3,"Book3",2022,false));
+
     }
     //Create a book (CREATE)
     @PostMapping()
@@ -30,7 +36,7 @@ public class BookController {
     //Get all created books (READ)
     @GetMapping()
     public ResponseEntity<List<Book>> getBooks(){
-
+        System.out.println(bookService.doSomething());
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
@@ -92,7 +98,6 @@ public class BookController {
     }
 
 
-
     //Get BookList based on availability
 //    @GetMapping()
 //    public ResponseEntity<List<Book>> getBooksByFilter(@RequestParam(required = false, defaultValue = "true") Boolean isAvailable){
@@ -107,3 +112,4 @@ public class BookController {
 //    }
 
 }
+
