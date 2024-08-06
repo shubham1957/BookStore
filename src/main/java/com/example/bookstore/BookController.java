@@ -16,10 +16,15 @@ import java.util.Objects;
 public class BookController {
     public static List<Book> bookList;
     public BookService bookService;
+    public BookService bookService2;
     public final String BOOK_NOT_FOUND = "Book Not Found";
 
-    public  BookController(BookService bookservice){
+    public  BookController(
+            //Qualifier is used to remove the conflict that which bean has to be used if there are multiple service class
+            @Qualifier("anotherBookService") BookService bookservice, 
+            @Qualifier("fakeBookService") BookService bookservice2){
         this.bookService=bookservice; //Constructor based dependency injection
+        this.bookService2=bookservice2;
         bookList = new ArrayList<>();
         bookList.add(new Book(1,"Book1",2000, true));
         bookList.add(new Book( 2,"Book2",2021,true));
@@ -37,6 +42,7 @@ public class BookController {
     @GetMapping()
     public ResponseEntity<List<Book>> getBooks(){
         System.out.println(bookService.doSomething());
+        System.out.println(bookService2.doSomething());
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
