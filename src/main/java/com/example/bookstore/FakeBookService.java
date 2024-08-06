@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FakeBookService implements BookService{
-
     @Override
     public String doSomething() {
         return "Something";
