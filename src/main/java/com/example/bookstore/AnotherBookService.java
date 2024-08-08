@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 @Service("anotherBookService")
-@Primary //making this class bean as primary
 public class AnotherBookService implements BookService{
     @Override
     public String doSomething() {

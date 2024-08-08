@@ -33,7 +33,7 @@ public class BookController {
     }
     //Create a book (CREATE)
     @PostMapping()
-    public ResponseEntity<Book> createTodo(@RequestBody Book newBook){
+    public ResponseEntity<Book> createBook(@RequestBody Book newBook){
         bookList.add(newBook);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBook); // Return 201 Created status
     }
