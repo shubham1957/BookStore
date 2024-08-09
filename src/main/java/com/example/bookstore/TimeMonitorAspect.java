@@ -10,12 +10,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class TimeMonitorAspect {
-
     @Around("@annotation(TimeMonitor)")
     public void logTime(ProceedingJoinPoint joinPoint){
         System.out.println("Logging Time");
         long start = System.currentTimeMillis();
-
         try {
             joinPoint.proceed();
         } catch (Throwable e) {

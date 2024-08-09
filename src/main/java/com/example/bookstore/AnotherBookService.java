@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 @Service("anotherBookService")
 public class AnotherBookService implements BookService{
     @Override
-    public String doSomething() {
-        return "Something from another Book service";
-    }
+    public String doSomething() { return "Something from another Book service"; }
 }
 
 
