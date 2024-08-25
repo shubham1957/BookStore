@@ -81,7 +81,6 @@ public class BookController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(BOOK_NOT_FOUND);
     }
-
     //Update the book partially
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateBookPartially (@PathVariable Long id, @RequestBody Book book){
@@ -102,7 +101,6 @@ public class BookController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BOOK_NOT_FOUND);
     }
-
 
     //Get BookList based on availability
 //    @GetMapping()
